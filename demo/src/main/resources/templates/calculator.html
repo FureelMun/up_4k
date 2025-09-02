@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 100%;
+            border: 2px solid rgba(255, 182, 193, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2a5298;
+            font-weight: 500;
+        }
+        
+        input[type="number"], select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #74b9ff;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #ff6b9d;
+            box-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .operation-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .operation-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #2a5298;
+            border: 2px solid transparent;
+        }
+        
+        .operation-btn:hover {
+            background: #ff6b9d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+        }
+        
+        .operation-btn.selected {
+            background: #ff6b9d;
+            color: white;
+            border-color: #ff6b9d;
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.4);
+        }
+        
+        .home-btn {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+        
+        .home-btn:hover {
+            color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.1);
+        }
+        
+        .error {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 0.8rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор</h1>
+        
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        
+        <form action="/calculate" method="post">
+            <div class="form-group">
+                <label for="num1">Первое число:</label>
+                <input type="number" id="num1" name="num1" step="any" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Операция:</label>
+                <div class="operation-buttons">
+                    <button type="button" class="operation-btn" data-operation="add">+</button>
+                    <button type="button" class="operation-btn" data-operation="subtract">-</button>
+                    <button type="button" class="operation-btn" data-operation="multiply">×</button>
+                    <button type="button" class="operation-btn" data-operation="divide">÷</button>
+                </div>
+                <input type="hidden" id="operation" name="operation" value="add" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="num2">Второе число:</label>
+                <input type="number" id="num2" name="num2" step="any" required>
+            </div>
+            
+            <button type="submit" class="calculate-btn">Вычислить</button>
+        </form>
+        
+        <a href="/" class="home-btn">← Вернуться на главную</a>
+    </div>
+
+    <script>
+        // Выбор операции
+        document.querySelectorAll('.operation-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Убираем выделение со всех кнопок
+                document.querySelectorAll('.operation-btn').forEach(b => b.classList.remove('selected'));
+                // Добавляем выделение на выбранную кнопку
+                this.classList.add('selected');
+                // Устанавливаем значение в скрытое поле
+                document.getElementById('operation').value = this.dataset.operation;
+            });
+        });
+        
+        // По умолчанию выбираем первую операцию
+        document.querySelector('.operation-btn').classList.add('selected');
+    </script>
+</body>
+</html> 
