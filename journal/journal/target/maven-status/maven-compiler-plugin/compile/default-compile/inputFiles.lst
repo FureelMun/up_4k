@@ -1,0 +1,14 @@
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\controller\CourseController.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\controller\HomeController.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\controller\StudentController.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\entity\CourseEntity.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\entity\StudentEntity.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\JournalApplication.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\model\CourseModel.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\model\StudentModel.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\repository\InMemoryCourseRepository.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\repository\InMemoryStudentRepository.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\service\CourseService.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\service\InMemoryCourseServiceImpl.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\service\InMemoryStudentServiceImpl.java
+C:\Users\Елизавета\Downloads\journal\journal\src\main\java\com\mpt\journal\service\StudentService.java

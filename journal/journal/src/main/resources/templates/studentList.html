@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список студентов</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background-color: #1a1a1a; 
+      color: #e0e0e0; 
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    h1 { color: #ffffff; margin-bottom: 30px; text-align: center; }
+    h2 { color: #ffffff; margin: 30px 0 20px 0; }
+    h3 { color: #ffffff; margin: 20px 0 15px 0; }
+    
+    .form-group { 
+      background-color: #2d2d2d; 
+      padding: 20px; 
+      border-radius: 8px; 
+      margin: 20px 0; 
+      border: 1px solid #404040;
+    }
+    .form-group input, .form-group select { 
+      margin: 5px; 
+      padding: 10px; 
+      background-color: #3d3d3d; 
+      border: 1px solid #555; 
+      border-radius: 4px; 
+      color: #e0e0e0;
+      width: 150px;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #007acc;
+      box-shadow: 0 0 5px rgba(0, 122, 204, 0.3);
+    }
+    
+    .search-filter { 
+      background-color: #2d2d2d; 
+      padding: 20px; 
+      margin: 20px 0; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    
+    .bulk-actions { 
+      background-color: #2a2a2a; 
+      padding: 20px; 
+      margin: 20px 0; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    
+    .student-item { 
+      background-color: #2d2d2d; 
+      border: 1px solid #404040; 
+      margin: 15px 0; 
+      padding: 20px; 
+      border-radius: 8px; 
+      transition: background-color 0.3s;
+    }
+    .student-item:hover { background-color: #333333; }
+    
+    button { 
+      padding: 10px 15px; 
+      margin: 5px; 
+      cursor: pointer; 
+      border: none; 
+      border-radius: 4px; 
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .delete-btn { background-color: #dc3545; color: white; }
+    .delete-btn:hover { background-color: #c82333; }
+    .soft-delete-btn { background-color: #fd7e14; color: white; }
+    .soft-delete-btn:hover { background-color: #e55a00; }
+    .update-btn { background-color: #28a745; color: white; }
+    .update-btn:hover { background-color: #218838; }
+    .add-btn { background-color: #007bff; color: white; }
+    .add-btn:hover { background-color: #0056b3; }
+    .search-btn { background-color: #6c757d; color: white; }
+    .search-btn:hover { background-color: #5a6268; }
+    .filter-btn { background-color: #17a2b8; color: white; }
+    .filter-btn:hover { background-color: #138496; }
+    
+    .nav-links { 
+      text-align: center; 
+      margin: 30px 0; 
+      padding: 20px; 
+      background-color: #2d2d2d; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    .nav-links a { 
+      color: #007bff; 
+      text-decoration: none; 
+      margin: 0 15px; 
+      padding: 10px 20px; 
+      background-color: #3d3d3d; 
+      border-radius: 4px; 
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover { 
+      background-color: #007bff; 
+      color: white; 
+    }
+    
+    .student-info { margin-bottom: 15px; }
+    .student-info strong { color: #ffffff; font-size: 1.1em; }
+    .student-info small { color: #b0b0b0; }
+    
+    .student-actions { margin-top: 15px; }
+    
+    .empty-state { 
+      text-align: center; 
+      color: #888; 
+      font-style: italic; 
+      padding: 40px; 
+      background-color: #2d2d2d; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    
+    .inline-form { display: inline-block; margin: 5px; }
+    
+    input[type="text"], input[type="number"] {
+      background-color: #3d3d3d;
+      border: 1px solid #555;
+      color: #e0e0e0;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    input[type="text"]:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: #007acc;
+      box-shadow: 0 0 5px rgba(0, 122, 204, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Список студентов</h1>
+
+    <!-- Форма добавления студента -->
+    <div class="form-group">
+      <h3>Добавить студента</h3>
+      <form action="/students/add" method="post">
+        <input type="text" name="name" placeholder="Имя" required>
+        <input type="text" name="lastName" placeholder="Фамилия" required>
+        <input type="text" name="firstName" placeholder="Отчество" required>
+        <input type="text" name="middleName" placeholder="Дополнительное имя" required>
+        <input type="number" name="yearsOfStudy" placeholder="Годы обучения" required>
+        <button type="submit" class="add-btn">Добавить студента</button>
+      </form>
+    </div>
+
+    <!-- Поиск и фильтрация -->
+    <div class="search-filter">
+      <h3>Поиск и фильтрация</h3>
+      
+      <!-- Поиск -->
+      <form action="/students/search" method="get" class="inline-form">
+        <input type="text" name="searchTerm" placeholder="Поиск по имени, фамилии, отчеству" 
+               th:value="${searchTerm}" style="width: 300px;">
+        <button type="submit" class="search-btn">Поиск</button>
+      </form>
+      
+      <!-- Фильтрация -->
+      <form action="/students/filter" method="get" class="inline-form">
+        <input type="text" name="name" placeholder="Имя" th:value="${name}">
+        <input type="text" name="lastName" placeholder="Фамилия" th:value="${lastName}">
+        <input type="number" name="yearsOfStudy" placeholder="Годы обучения" th:value="${yearsOfStudy}">
+        <button type="submit" class="filter-btn">Фильтровать</button>
+      </form>
+      
+      <a href="/students" style="margin-left: 20px; color: #007bff;">Сбросить фильтры</a>
+    </div>
+
+    <!-- Множественные действия -->
+    <div class="bulk-actions">
+      <h3>Множественные действия</h3>
+      <form action="/students/bulk-delete" method="post" class="inline-form">
+        <input type="text" name="ids" placeholder="ID студентов через запятую (например: 1,2,3)" style="width: 300px;">
+        <button type="submit" class="delete-btn">Физически удалить</button>
+      </form>
+      
+      <form action="/students/bulk-soft-delete" method="post" class="inline-form">
+        <input type="text" name="ids" placeholder="ID студентов через запятую (например: 1,2,3)" style="width: 300px;">
+        <button type="submit" class="soft-delete-btn">Пометить как удаленные</button>
+      </form>
+      
+      <form action="/students/bulk-restore" method="post" class="inline-form">
+        <input type="text" name="ids" placeholder="ID студентов через запятую (например: 1,2,3)" style="width: 300px;">
+        <button type="submit" class="update-btn">Восстановить</button>
+      </form>
+    </div>
+
+    <h2>Все студенты:</h2>
+    <div th:each="student : ${students}" class="student-item">
+      <div class="student-info">
+        <strong>ID: <span th:text="${student.id}"></span> | </strong>
+        <strong th:text="${student.name} + ' ' + ${student.lastName} + ' ' + ${student.firstName} + ' ' + ${student.middleName}"></strong><br>
+        <small>Годы обучения: <span th:text="${student.yearsOfStudy}"></span> | 
+               Статус: <span th:text="${student.deleted ? 'Удален' : 'Активен'}" 
+                             th:style="${student.deleted ? 'color: #dc3545;' : 'color: #28a745;'}"></span></small>
+      </div>
+      
+      <div class="student-actions">
+        <form action="/students/update" method="post" class="inline-form">
+          <input type="hidden" name="id" th:value="${student.id}"/>
+          <input type="text" name="name" placeholder="Имя" th:value="${student.name}" required/>
+          <input type="text" name="lastName" placeholder="Фамилия" th:value="${student.lastName}" required/>
+          <input type="text" name="firstName" placeholder="Отчество" th:value="${student.firstName}" required/>
+          <input type="text" name="middleName" placeholder="Дополнительное имя" th:value="${student.middleName}" required/>
+          <input type="number" name="yearsOfStudy" placeholder="Годы обучения" th:value="${student.yearsOfStudy}" required/>
+          <button type="submit" class="update-btn">Обновить</button>
+        </form>
+        
+        <form action="/students/delete" method="post" class="inline-form">
+          <input type="hidden" name="id" th:value="${student.id}"/>
+          <button type="submit" class="delete-btn">Физически удалить</button>
+        </form>
+        
+        <form action="/students/soft-delete" method="post" class="inline-form" th:if="${!student.deleted}">
+          <input type="hidden" name="id" th:value="${student.id}"/>
+          <button type="submit" class="soft-delete-btn">Пометить как удаленный</button>
+        </form>
+        
+        <form action="/students/restore" method="post" class="inline-form" th:if="${student.deleted}">
+          <input type="hidden" name="id" th:value="${student.id}"/>
+          <button type="submit" class="update-btn">Восстановить</button>
+        </form>
+      </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(students)}" class="empty-state">
+      <p>Студенты не найдены.</p>
+    </div>
+
+    <div class="nav-links">
+      <a href="/courses">Перейти к курсам</a>
+      <a href="/groups">Перейти к группам</a>
+      <a href="/">Главная страница</a>
+    </div>
+  </div>
+</body>
+</html>

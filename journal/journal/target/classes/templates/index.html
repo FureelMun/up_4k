@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Журнал - Главная страница</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #1a1a1a; 
+            color: #e0e0e0; 
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #2d2d2d;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border: 1px solid #404040;
+        }
+        h1 { 
+            color: #ffffff; 
+            text-align: center; 
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        .nav-button {
+            display: inline-block;
+            padding: 20px 40px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            border: 2px solid transparent;
+            min-width: 200px;
+            text-align: center;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        .nav-button.students { background-color: #28a745; }
+        .nav-button.students:hover { background-color: #218838; }
+        .nav-button.courses { background-color: #17a2b8; }
+        .nav-button.courses:hover { background-color: #138496; }
+        .nav-button.groups { background-color: #6f42c1; }
+        .nav-button.groups:hover { background-color: #5a32a3; }
+        
+        .features {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #3d3d3d;
+            border-radius: 8px;
+            border: 1px solid #555;
+        }
+        .features h3 {
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .features ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .features li {
+            padding: 15px;
+            background-color: #4d4d4d;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        .features li:hover {
+            background-color: #555;
+        }
+        
+        .welcome-text {
+            text-align: center;
+            color: #b0b0b0;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-item {
+            background-color: #3d3d3d;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #555;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+            display: block;
+        }
+        .stat-label {
+            color: #b0b0b0;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Система управления журналом</h1>
+        
+        <div class="welcome-text">
+            Добро пожаловать в систему управления учебным процессом. 
+            Здесь вы можете управлять студентами, курсами и группами.
+        </div>
+        
+        <div class="nav-buttons">
+            <a href="/students" class="nav-button students">Студенты</a>
+            <a href="/courses" class="nav-button courses">Курсы</a>
+            <a href="/groups" class="nav-button groups">Группы</a>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <div class="stat-label">Сущности</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">12+</span>
+                <div class="stat-label">Функций</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <div class="stat-label">Готовность</div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h3>Доступный функционал</h3>
+            <ul>
+                <li>Управление студентами, курсами и группами</li>
+                <li>Поиск по различным параметрам</li>
+                <li>Фильтрация по 3 критериям для каждой сущности</li>
+                <li>Множественное удаление записей</li>
+                <li>Логическое и физическое удаление</li>
+                <li>Добавление и редактирование записей</li>
+                <li>Отслеживание лет обучения для студентов</li>
+                <li>Управление кредитами для курсов</li>
+                <li>Специализации для групп</li>
+                <li>Современный темный интерфейс</li>
+                <li>Адаптивный дизайн</li>
+                <li>Интуитивная навигация</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

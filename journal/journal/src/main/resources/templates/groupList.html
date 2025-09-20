@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список групп</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background-color: #1a1a1a; 
+      color: #e0e0e0; 
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    h1 { color: #ffffff; margin-bottom: 30px; text-align: center; }
+    h2 { color: #ffffff; margin: 30px 0 20px 0; }
+    h3 { color: #ffffff; margin: 20px 0 15px 0; }
+    
+    .form-group { 
+      background-color: #2d2d2d; 
+      padding: 20px; 
+      border-radius: 8px; 
+      margin: 20px 0; 
+      border: 1px solid #404040;
+    }
+    .form-group input, .form-group select { 
+      margin: 5px; 
+      padding: 10px; 
+      background-color: #3d3d3d; 
+      border: 1px solid #555; 
+      border-radius: 4px; 
+      color: #e0e0e0;
+      width: 150px;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #007acc;
+      box-shadow: 0 0 5px rgba(0, 122, 204, 0.3);
+    }
+    
+    .search-filter { 
+      background-color: #2d2d2d; 
+      padding: 20px; 
+      margin: 20px 0; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    
+    .bulk-actions { 
+      background-color: #2a2a2a; 
+      padding: 20px; 
+      margin: 20px 0; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    
+    .group-item { 
+      background-color: #2d2d2d; 
+      border: 1px solid #404040; 
+      margin: 15px 0; 
+      padding: 20px; 
+      border-radius: 8px; 
+      transition: background-color 0.3s;
+    }
+    .group-item:hover { background-color: #333333; }
+    
+    button { 
+      padding: 10px 15px; 
+      margin: 5px; 
+      cursor: pointer; 
+      border: none; 
+      border-radius: 4px; 
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .delete-btn { background-color: #dc3545; color: white; }
+    .delete-btn:hover { background-color: #c82333; }
+    .soft-delete-btn { background-color: #fd7e14; color: white; }
+    .soft-delete-btn:hover { background-color: #e55a00; }
+    .update-btn { background-color: #28a745; color: white; }
+    .update-btn:hover { background-color: #218838; }
+    .add-btn { background-color: #007bff; color: white; }
+    .add-btn:hover { background-color: #0056b3; }
+    .search-btn { background-color: #6c757d; color: white; }
+    .search-btn:hover { background-color: #5a6268; }
+    .filter-btn { background-color: #17a2b8; color: white; }
+    .filter-btn:hover { background-color: #138496; }
+    
+    .nav-links { 
+      text-align: center; 
+      margin: 30px 0; 
+      padding: 20px; 
+      background-color: #2d2d2d; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    .nav-links a { 
+      color: #007bff; 
+      text-decoration: none; 
+      margin: 0 15px; 
+      padding: 10px 20px; 
+      background-color: #3d3d3d; 
+      border-radius: 4px; 
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover { 
+      background-color: #007bff; 
+      color: white; 
+    }
+    
+    .group-info { margin-bottom: 15px; }
+    .group-info strong { color: #ffffff; font-size: 1.1em; }
+    .group-info small { color: #b0b0b0; }
+    
+    .group-actions { margin-top: 15px; }
+    
+    .empty-state { 
+      text-align: center; 
+      color: #888; 
+      font-style: italic; 
+      padding: 40px; 
+      background-color: #2d2d2d; 
+      border-radius: 8px; 
+      border: 1px solid #404040;
+    }
+    
+    .inline-form { display: inline-block; margin: 5px; }
+    
+    input[type="text"], input[type="number"] {
+      background-color: #3d3d3d;
+      border: 1px solid #555;
+      color: #e0e0e0;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    input[type="text"]:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: #007acc;
+      box-shadow: 0 0 5px rgba(0, 122, 204, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Список групп</h1>
+
+    <!-- Форма добавления группы -->
+    <div class="form-group">
+      <h3>Добавить группу</h3>
+      <form action="/groups/add" method="post">
+        <input type="text" name="groupName" placeholder="Название группы" required>
+        <input type="text" name="specialization" placeholder="Специализация" required>
+        <input type="number" name="yearOfStudy" placeholder="Год обучения" required>
+        <button type="submit" class="add-btn">Добавить группу</button>
+      </form>
+    </div>
+
+    <!-- Поиск и фильтрация -->
+    <div class="search-filter">
+      <h3>Поиск и фильтрация</h3>
+      
+      <!-- Поиск -->
+      <form action="/groups/search" method="get" class="inline-form">
+        <input type="text" name="searchTerm" placeholder="Поиск по названию группы или специализации" 
+               th:value="${searchTerm}" style="width: 300px;">
+        <button type="submit" class="search-btn">Поиск</button>
+      </form>
+      
+      <!-- Фильтрация -->
+      <form action="/groups/filter" method="get" class="inline-form">
+        <input type="text" name="groupName" placeholder="Название группы" th:value="${groupName}">
+        <input type="text" name="specialization" placeholder="Специализация" th:value="${specialization}">
+        <input type="number" name="yearOfStudy" placeholder="Год обучения" th:value="${yearOfStudy}">
+        <button type="submit" class="filter-btn">Фильтровать</button>
+      </form>
+      
+      <a href="/groups" style="margin-left: 20px; color: #007bff;">Сбросить фильтры</a>
+    </div>
+
+    <!-- Множественные действия -->
+    <div class="bulk-actions">
+      <h3>Множественные действия</h3>
+      <form action="/groups/bulk-delete" method="post" class="inline-form">
+        <input type="text" name="ids" placeholder="ID групп через запятую (например: 1,2,3)" style="width: 300px;">
+        <button type="submit" class="delete-btn">Физически удалить</button>
+      </form>
+      
+      <form action="/groups/bulk-soft-delete" method="post" class="inline-form">
+        <input type="text" name="ids" placeholder="ID групп через запятую (например: 1,2,3)" style="width: 300px;">
+        <button type="submit" class="soft-delete-btn">Логически удалить</button>
+      </form>
+    </div>
+
+    <h2>Все группы:</h2>
+    <div th:each="group : ${groups}" class="group-item">
+      <div class="group-info">
+        <strong>ID: <span th:text="${group.id}"></span> | </strong>
+        <strong th:text="${group.groupName}"></strong> - 
+        <span th:text="${group.specialization}"></span><br>
+        <small>Год обучения: <span th:text="${group.yearOfStudy}"></span> | 
+               Статус: <span th:text="${group.deleted ? 'Удален' : 'Активен'}" 
+                             th:style="${group.deleted ? 'color: #dc3545;' : 'color: #28a745;'}"></span></small>
+      </div>
+      
+      <div class="group-actions">
+        <form action="/groups/update" method="post" class="inline-form">
+          <input type="hidden" name="id" th:value="${group.id}"/>
+          <input type="text" name="groupName" placeholder="Название группы" th:value="${group.groupName}" required/>
+          <input type="text" name="specialization" placeholder="Специализация" th:value="${group.specialization}" required/>
+          <input type="number" name="yearOfStudy" placeholder="Год обучения" th:value="${group.yearOfStudy}" required/>
+          <button type="submit" class="update-btn">Обновить</button>
+        </form>
+        
+        <form action="/groups/delete" method="post" class="inline-form">
+          <input type="hidden" name="id" th:value="${group.id}"/>
+          <button type="submit" class="delete-btn">Физически удалить</button>
+        </form>
+        
+        <form action="/groups/soft-delete" method="post" class="inline-form">
+          <input type="hidden" name="id" th:value="${group.id}"/>
+          <button type="submit" class="soft-delete-btn">Логически удалить</button>
+        </form>
+      </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(groups)}" class="empty-state">
+      <p>Группы не найдены.</p>
+    </div>
+
+    <div class="nav-links">
+      <a href="/students">Перейти к студентам</a>
+      <a href="/courses">Перейти к курсам</a>
+      <a href="/">Главная страница</a>
+    </div>
+  </div>
+</body>
+</html>
